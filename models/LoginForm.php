@@ -4,6 +4,8 @@ namespace app\models;
 
 use Yii;
 use yii\base\Model;
+use yii\helpers\VarDumper;
+use yii\db\Query;
 
 /**
  * LoginForm is the model behind the login form.
@@ -45,6 +47,10 @@ class LoginForm extends Model
             $user = $this->getUser();
 
             if (!$user || !$user->validatePassword($this->password)) {
+                $session = Yii::$app->session;
+                $session->set('username', $this->username);
+                $session->set('nama_lengkap', $this->$nama);
+                $session->set('id_daerah', $this->$id_daerah);
                 $this->addError($attribute, 'Incorrect username or password.');
             }
         }

@@ -8,9 +8,13 @@ use yii\web\Controller;
 use yii\filters\VerbFilter;
 use app\models\LoginForm;
 use app\models\ContactForm;
+use yii\helpers\VarDumper;
+use yii\helpers\Url;
 
 class SiteController extends Controller
 {
+    public $layout = "defaultadmin.php";
+
     public function behaviors()
     {
         return [
@@ -28,7 +32,7 @@ class SiteController extends Controller
             'verbs' => [
                 'class' => VerbFilter::className(),
                 'actions' => [
-                    'logout' => ['post'],
+                    'logout' => ['get'],
                 ],
             ],
         ];
@@ -49,7 +53,13 @@ class SiteController extends Controller
 
     public function actionIndex()
     {
-        return $this->render('index');
+        if (!Yii::$app->user->isGuest) {
+            $session = Yii::$app->session;
+            return $this->render('index');
+        } else {
+            $data = Url::base() . '/site/login';
+            return $this->redirect($data);
+        }
     }
 
     public function actionLogin()
@@ -61,16 +71,21 @@ class SiteController extends Controller
         $model = new LoginForm();
         if ($model->load(Yii::$app->request->post()) && $model->login()) {
             return $this->goBack();
+        } else {
+            $this->layout = "default.php";
+            return $this->render('login', [
+                'model' => $model,
+            ]);
         }
-        return $this->render('login', [
-            'model' => $model,
-        ]);
     }
 
     public function actionLogout()
     {
+        $session = Yii::$app->session;
+        $session->remove('akses');
+        $session->remove('nama_lengkap');
+        $session->remove('id_daerah');
         Yii::$app->user->logout();
-
         return $this->goHome();
     }
 

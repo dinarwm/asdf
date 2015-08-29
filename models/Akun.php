@@ -1,7 +1,6 @@
 <?php
 
 namespace app\models;
-
 use Yii;
 
 /**
@@ -50,4 +49,5 @@ class Akun extends \yii\db\ActiveRecord
             'id_daerah' => 'Id Daerah',
         ];
     }
+
 }
