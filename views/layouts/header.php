@@ -9,7 +9,7 @@ use yii\helpers\Url;
             <span class="icon-bar"></span>
             <span class="icon-bar"></span>
         </button>
-        <a class="navbar-brand col-md-12 logo" href="/basic/web/admin"> 
+        <a class="navbar-brand col-md-12 logo" href="<?php echo Url::base();?>"> 
                 Sistem Informasi Kantor Pelayanan Perizinan Terpadu
         </a>
     </div>
